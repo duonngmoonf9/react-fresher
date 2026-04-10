@@ -1,11 +1,16 @@
+import App from '@/App';
+import AboutPage from 'pages/client/AboutPage.tsx';
+import BookPage from 'pages/client/BookPage.tsx';
+import HomePage from 'pages/client/HomePage.tsx';
+import LoginClient from 'pages/client/auth/LoginClient.tsx';
+import RegisterClient from 'pages/client/auth/RegisterClient.tsx';
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import {
     createBrowserRouter,
     RouterProvider,
 } from "react-router-dom";
-import App from './App.tsx';
-import './assets/style.scss';
+import 'styles/global.scss';
 const rootLoader = async () => {
     return { message: "Hello from loader" };
 };
@@ -16,20 +21,34 @@ const router = createBrowserRouter([
         loader: rootLoader,
         children: [
             {
-                path: "/service",
-                element: <>service</>,
+                index: true,
+                element: <HomePage />
+            },
+            {
+                path: "/home",
+                element: <HomePage />,
                 // loader: teamLoader,
             },
             {
                 path: "/about",
-                element: <>about</>,
+                element: <AboutPage />,
+                // loader: teamLoader,
+            },
+            {
+                path: "/book",
+                element: <BookPage />,
                 // loader: teamLoader,
             },
         ],
     },
     {
         path: "/Login",
-        element: <>login</>,
+        element: <LoginClient />
+        // loader: teamLoader,
+    },
+    {
+        path: "/register",
+        element: <RegisterClient />
         // loader: teamLoader,
     },
 

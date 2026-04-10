@@ -6,8 +6,8 @@ function App() {
     const data = useLoaderData() as { message: string };
     return (
         <>
-            <div>chao sep duong</div>
-            <div>{data.message}</div>
+            {/* <div>chao sep duong</div>
+            <div>{data.message}</div> */}
             <AppHeader />
             <Outlet />
             <AppFooter />

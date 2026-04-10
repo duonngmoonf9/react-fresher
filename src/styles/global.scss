@@ -1,0 +1,19 @@
+body {
+    margin: 0;
+}
+
+.form-register {
+    box-shadow: 2px 2px 45px 0px rgba(0, 0, 0, 0.61);
+    -webkit-box-shadow: 2px 2px 45px 0px rgba(0, 0, 0, 0.61);
+    -moz-box-shadow: 2px 2px 45px 0px rgba(0, 0, 0, 0.61);
+
+    border-radius: 5px;
+
+    h2 {
+        padding-top: 10px;
+    }
+
+    form {
+        margin: 20px;
+    }
+}
