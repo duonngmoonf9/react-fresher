@@ -13,7 +13,7 @@ const login = (data: object) => {
 }
 const getAccount = () => {
     const API_URL = `/api/v1/auth/account`;
-    return axios.get<IBackendRes<ILogin>>(API_URL);
+    return axios.get<IBackendRes<IAccount>>(API_URL);
 }
 export { getAccount, login, register };
 

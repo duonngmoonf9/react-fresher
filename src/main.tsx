@@ -1,5 +1,6 @@
 import App from '@/App';
 import { App as AppAntd } from 'antd';
+import { AuthProvider } from 'components/context/AuthContext';
 import AboutPage from 'pages/client/AboutPage.tsx';
 import BookPage from 'pages/client/BookPage.tsx';
 import HomePage from 'pages/client/HomePage.tsx';
@@ -12,22 +13,19 @@ import {
     RouterProvider,
 } from "react-router-dom";
 import 'styles/global.scss';
-import { getAccount } from './services/api.service';
-const rootLoader = async () => {
-    return { message: "Hello from loader" };
-};
-const loadAccount = async () => {
-    const res = await getAccount();
-    if (res.data) {
-        return res.data.user;
-    }
-    return;
-}
+
+// const loadAccount = async () => {
+//     const res = await getAccount();
+//     if (res.data) {
+//         return { user: res.data };
+//     }
+//     return { user: null };
+
+// }
 const router = createBrowserRouter([
     {
         path: "/",
         element: <App />,
-        loader: rootLoader,
         children: [
             {
                 index: true,
@@ -36,17 +34,14 @@ const router = createBrowserRouter([
             {
                 path: "/home",
                 element: <HomePage />,
-                loader: loadAccount,
             },
             {
                 path: "/about",
                 element: <AboutPage />,
-                // loader: teamLoader,
             },
             {
                 path: "/book",
                 element: <BookPage />,
-                // loader: teamLoader,
             },
         ],
     },
@@ -66,7 +61,9 @@ createRoot(document.getElementById('root')!).render(
     <StrictMode>
         {/* <App /> */}
         <AppAntd>
-            <RouterProvider router={router} />
+            <AuthProvider>
+                <RouterProvider router={router} />
+            </AuthProvider>
         </AppAntd>
     </StrictMode>,
 )

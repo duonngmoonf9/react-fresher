@@ -1,16 +1,47 @@
-import { Outlet, useLoaderData } from "react-router-dom";
-import AppFooter from "./components/layout/AppFooter";
-import AppHeader from "./components/layout/AppHeader";
+import { useAuthContext } from "components/context/AuthContext";
+import AppFooter from "components/layout/AppFooter";
+import AppHeader from "components/layout/AppHeader";
+import { useEffect, useState } from "react";
+import { Outlet } from "react-router-dom";
+import { RingLoader } from "react-spinners";
+import { getAccount } from "services/api.service";
 
 function App() {
-    const data = useLoaderData() as { message: string };
+    let [color, setColor] = useState("#379bd4");
+    const { user, setUser, loading, setLoading, delay } = useAuthContext();
+
+    useEffect(() => {
+        const fetchGetAccount = async () => {
+            const res = await getAccount();
+            if (res.data) {
+                setUser(res.data.user);
+            }
+            await delay(3000);
+            setLoading(false)
+        }
+        fetchGetAccount();
+    }, [])
     return (
         <>
-            {/* <div>chao sep duong</div>
-            <div>{data.message}</div> */}
-            <AppHeader />
-            <Outlet />
-            <AppFooter />
+            {loading === true ?
+                <div style={{ position: "fixed", top: "50%", left: "50%", transform: "translate(-50%,-50%)" }}>
+                    <RingLoader
+                        color={color}
+                        loading={loading}
+                        size={50}
+                        aria-label="Loading Spinner"
+                        data-testid="loader"
+
+                    />
+                </div>
+                :
+                <>
+                    <AppHeader />
+                    <Outlet />
+                    <AppFooter />
+                </>
+            }
+
 
         </>)
 }

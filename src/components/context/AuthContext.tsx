@@ -1,19 +1,26 @@
-import { createContext, ReactNode } from "react";
+import React, { createContext, useContext, useState } from "react";
 
-// 1. Định nghĩa kiểu dữ liệu (interface) cho những gì Context sẽ cung cấp
 interface AuthContextType {
     delay: (milSeconds: number) => Promise<boolean>;
+    isAuthenticated: boolean;
+    setIsAuthenticated: (v: boolean) => void;
+    setUser: (v: IUser) => void;
+    user: IUser | null;
+    loading: boolean;
+    setLoading: (v: boolean) => void;
+
 }
 
-// 2. Truyền interface vào createContext
 export const AuthContext = createContext<AuthContextType | null>(null);
 
-// 3. Định nghĩa kiểu dữ liệu cho props của Provider
-interface AuthProviderProps {
-    children: ReactNode;
+interface TProps {
+    children: React.ReactNode;
 }
 
-export const AuthProvider = ({ children }: AuthProviderProps) => {
+export const AuthProvider = ({ children }: TProps) => {
+    const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
+    const [loading, setLoading] = useState<boolean>(true);
+    const [user, setUser] = useState<IUser | null>(null);
 
     // 4. Định nghĩa rõ kiểu trả về của hàm delay là Promise<boolean>
     const delay = (milSeconds: number): Promise<boolean> => {
@@ -24,10 +31,26 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         });
     };
 
-    // 5. Sử dụng AuthContext.Provider và truyền value vào
     return (
-        <AuthContext.Provider value={{ delay }}>
+        <AuthContext value={{
+            delay,
+            user, setUser,
+            isAuthenticated, setIsAuthenticated,
+            loading, setLoading
+        }}>
             {children}
-        </AuthContext.Provider>
+        </AuthContext>
     );
+};
+
+export const useAuthContext = () => {
+    const authContext = useContext(AuthContext);
+
+    if (!authContext) {
+        throw new Error(
+            "authContext has to be used within <AuthContext.Provider>"
+        );
+    }
+
+    return authContext;
 };
