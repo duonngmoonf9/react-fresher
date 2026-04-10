@@ -2,10 +2,10 @@ export { };
 
 declare global {
     interface IBackendRes<T> {
-        error?: string | string[];
+        error?: string | string[]; // co neu loi
         message: string;
         statusCode: number | string;
-        data?: T;
+        data?: T; //co neu thanh cong
     }
 
     interface IModelPaginate<T> {
@@ -18,4 +18,36 @@ declare global {
         results: T[]
     }
 
+    interface ILogin {
+        access_token: string;
+        user: {
+            "email": string,
+            "phone": string,
+            "fullName": string,
+            "role": string,
+            "avatar": string,
+            "id": string
+        }
+    }
+    interface IRegister {
+        statusCode: number,
+        message: string,
+        data: {
+            "_id": string,
+            "email": string,
+            "fullName": string
+        },
+    }
+
+    interface IAppContext {
+        isAuthenticated: boolean,
+        user: {
+            "email": string,
+            "phone": string,
+            "fullName": string,
+            "role": string,
+            "avatar": string,
+            "id": string
+        },
+    }
 }

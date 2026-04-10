@@ -1,4 +1,5 @@
 import App from '@/App';
+import { App as AppAntd } from 'antd';
 import AboutPage from 'pages/client/AboutPage.tsx';
 import BookPage from 'pages/client/BookPage.tsx';
 import HomePage from 'pages/client/HomePage.tsx';
@@ -11,9 +12,17 @@ import {
     RouterProvider,
 } from "react-router-dom";
 import 'styles/global.scss';
+import { getAccount } from './services/api.service';
 const rootLoader = async () => {
     return { message: "Hello from loader" };
 };
+const loadAccount = async () => {
+    const res = await getAccount();
+    if (res.data) {
+        return res.data.user;
+    }
+    return;
+}
 const router = createBrowserRouter([
     {
         path: "/",
@@ -27,7 +36,7 @@ const router = createBrowserRouter([
             {
                 path: "/home",
                 element: <HomePage />,
-                // loader: teamLoader,
+                loader: loadAccount,
             },
             {
                 path: "/about",
@@ -56,6 +65,8 @@ const router = createBrowserRouter([
 createRoot(document.getElementById('root')!).render(
     <StrictMode>
         {/* <App /> */}
-        <RouterProvider router={router} />
+        <AppAntd>
+            <RouterProvider router={router} />
+        </AppAntd>
     </StrictMode>,
 )

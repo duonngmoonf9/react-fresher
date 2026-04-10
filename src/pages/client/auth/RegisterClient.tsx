@@ -1,27 +1,47 @@
 
+import { register } from '@/services/api.service';
 import type { FormProps } from 'antd';
-import { Button, Col, Divider, Form, Input, message, Row } from 'antd';
-import { Link } from 'react-router-dom';
-
-type FieldType = {
-    fullName?: string;
-    password?: string;
-    email?: string;
-    phone?: string;
-};
+import { App, Button, Col, Divider, Form, Input, Row } from 'antd';
+import { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 
 
-const onFinish: FormProps<FieldType>['onFinish'] = (values) => {
-    console.log('Success:', values);
-};
-
-const onFinishFailed: FormProps<FieldType>['onFinishFailed'] = (errorInfo) => {
-    message.error(errorInfo.message);
-};
 
 
 const RegisterClient = () => {
+    const [isLoading, setIsLoading] = useState(false);
     const [formRegister] = Form.useForm();
+
+    const navigate = useNavigate();
+    const { message } = App.useApp();
+
+    type FieldType = {
+        fullName?: string;
+        password?: string;
+        email?: string;
+        phone?: string;
+    };
+
+
+    const onFinish: FormProps<FieldType>['onFinish'] = async (values) => {
+        // console.log('Success:', values);
+        setIsLoading(true);
+
+        const res = await register(values);
+        if (res.data) {
+            message.success('Tao thanh cong, vui long dang nhap')
+            navigate('/login');
+        } else {
+            message.error(JSON.stringify(res.message))
+        }
+        setIsLoading(false);
+
+    };
+
+    const onFinishFailed: FormProps<FieldType>['onFinishFailed'] = (errorInfo) => {
+        message.error(errorInfo.message);
+    };
+
     return (
         <Row justify={'center'} style={{ marginTop: "30px" }}>
             <Col xs={24} md={16} lg={8}>
@@ -37,7 +57,7 @@ const RegisterClient = () => {
                         autoComplete="off"
                     >
 
-                        <Form.Item
+                        <Form.Item<FieldType>
                             label="Username"
                             name="fullName"
                             rules={[{ required: true, message: 'Trường không được để trống!' },
@@ -46,7 +66,7 @@ const RegisterClient = () => {
                         >
                             <Input />
                         </Form.Item>
-                        <Form.Item
+                        <Form.Item<FieldType>
                             label="Email"
                             name="email"
                             rules={[{ required: true, message: 'Trường không được để trống!' },
@@ -55,14 +75,14 @@ const RegisterClient = () => {
                         >
                             <Input />
                         </Form.Item>
-                        <Form.Item
+                        <Form.Item<FieldType>
                             label="Password"
                             name="password"
                             rules={[{ required: true, message: 'Trường không được để trống!' }]}
                         >
                             <Input.Password />
                         </Form.Item>
-                        <Form.Item
+                        <Form.Item<FieldType>
                             label="Phone"
                             name="phone"
                             rules={[
@@ -75,7 +95,7 @@ const RegisterClient = () => {
                         >
                             <Input />
                         </Form.Item>
-                        <Button type="primary" htmlType="submit">
+                        <Button type="primary" htmlType="submit" loading={isLoading}>
                             Register
                         </Button>
                     </Form>
