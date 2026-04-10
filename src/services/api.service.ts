@@ -7,7 +7,7 @@ const login = (data: object) => {
     const API_URL = `/api/v1/auth/login`;
     return axios.post<IBackendRes<ILogin>>(API_URL, data, {
         "headers": {
-            delay: 3000
+            delay: 500
         }
     });
 }

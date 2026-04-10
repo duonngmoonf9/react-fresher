@@ -13,6 +13,7 @@ import {
     RouterProvider,
 } from "react-router-dom";
 import 'styles/global.scss';
+import AuthCheck from './components/auth';
 
 // const loadAccount = async () => {
 //     const res = await getAccount();
@@ -42,6 +43,14 @@ const router = createBrowserRouter([
             {
                 path: "/book",
                 element: <BookPage />,
+            },
+            {
+                path: "/checkout",
+                element: <AuthCheck ><div>checkout</div></AuthCheck>
+            },
+            {
+                path: "/admin",
+                element: <AuthCheck ><div>admin pages</div></AuthCheck>
             },
         ],
     },

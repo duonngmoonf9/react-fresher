@@ -8,15 +8,16 @@ import { getAccount } from "services/api.service";
 
 function App() {
     let [color, setColor] = useState("#379bd4");
-    const { user, setUser, loading, setLoading, delay } = useAuthContext();
+    const { setIsAuthenticated, setUser, loading, setLoading, delay } = useAuthContext();
 
     useEffect(() => {
         const fetchGetAccount = async () => {
             const res = await getAccount();
             if (res.data) {
+                setIsAuthenticated(true);
                 setUser(res.data.user);
             }
-            await delay(3000);
+            await delay(500);
             setLoading(false)
         }
         fetchGetAccount();
