@@ -1,4 +1,5 @@
 
+import { useAuthContext } from '@/components/context/AuthContext';
 import { login } from '@/services/api.service';
 import type { FormProps } from 'antd';
 import { App, Button, Col, Divider, Form, Input, Row } from 'antd';
@@ -11,6 +12,8 @@ import { Link, useNavigate } from 'react-router-dom';
 const LoginClient = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [formLogin] = Form.useForm();
+
+    const { setIsAuthenticated, setUser } = useAuthContext();
 
     const navigate = useNavigate();
     const { message } = App.useApp();
@@ -31,6 +34,8 @@ const LoginClient = () => {
         if (res.data) {
             localStorage.setItem('access_token', res.data.access_token);
             message.success('Dang nhap thanh cong')
+            setIsAuthenticated(true);
+            setUser(res.data.user);
             navigate('/');
         } else {
             message.error(JSON.stringify(res.message))

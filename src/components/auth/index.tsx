@@ -31,7 +31,7 @@ const AuthCheck = ({ children }: IProps) => {
                 <Result
                     status="404"
                     title="404"
-                    subTitle="Sorry, the page you visited does not exist."
+                    subTitle="Bạn không có quyền truy cập."
                     extra={<Button type="primary"><Link to={'/'}>Ve trang chu</Link></Button>}
                 />
             )

@@ -1,6 +1,12 @@
 import App from '@/App';
 import { App as AppAntd } from 'antd';
+import DashBoardPage from 'components/admin/dashboard';
+import ManageBookPage from 'components/admin/manage.book';
+import ManageOrderPage from 'components/admin/manage.order';
+import ManageUserPage from 'components/admin/manage.user';
+import AuthCheck from 'components/auth';
 import { AuthProvider } from 'components/context/AuthContext';
+import AppHeaderAdmin from 'components/layout/AppHeaderAdmin';
 import AboutPage from 'pages/client/AboutPage.tsx';
 import BookPage from 'pages/client/BookPage.tsx';
 import HomePage from 'pages/client/HomePage.tsx';
@@ -13,7 +19,6 @@ import {
     RouterProvider,
 } from "react-router-dom";
 import 'styles/global.scss';
-import AuthCheck from './components/auth';
 
 // const loadAccount = async () => {
 //     const res = await getAccount();
@@ -46,13 +51,60 @@ const router = createBrowserRouter([
             },
             {
                 path: "/checkout",
-                element: <AuthCheck ><div>checkout</div></AuthCheck>
+                element: (
+                    <AuthCheck>
+                        <div>checkout page</div>
+                    </AuthCheck>
+                ),
+            }
+        ],
+    },
+    {
+        path: "admin",
+        element: <AppHeaderAdmin />,
+        children: [
+            {
+                index: true,
+                element: (
+                    <AuthCheck>
+                        <DashBoardPage />
+                    </AuthCheck>
+                )
+            },
+            {
+                path: "book",
+                element: (
+                    <AuthCheck>
+                        <ManageBookPage />
+                    </AuthCheck>
+                )
+            },
+            {
+                path: "order",
+                element: (
+                    <AuthCheck>
+                        <ManageOrderPage />
+                    </AuthCheck>
+                )
+            },
+            {
+                path: "user",
+                element: (
+                    <AuthCheck>
+                        <ManageUserPage />
+                    </AuthCheck>
+                ),
             },
             {
                 path: "/admin",
-                element: <AuthCheck ><div>admin pages</div></AuthCheck>
+                element: (
+                    <AuthCheck>
+                        <div>admin page</div>
+                    </AuthCheck>
+                ),
             },
-        ],
+
+        ]
     },
     {
         path: "/Login",
@@ -72,7 +124,8 @@ createRoot(document.getElementById('root')!).render(
         <AppAntd>
             <AuthProvider>
                 <RouterProvider router={router} />
-            </AuthProvider>
+            </AuthProvider >
+
         </AppAntd>
     </StrictMode>,
 )

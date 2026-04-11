@@ -11,9 +11,14 @@ const login = (data: object) => {
         }
     });
 }
+const logout = () => {
+    const API_URL = `/api/v1/auth/logout`;
+    return axios.post<IBackendRes<IRegister>>(API_URL);
+}
+
 const getAccount = () => {
     const API_URL = `/api/v1/auth/account`;
     return axios.get<IBackendRes<IAccount>>(API_URL);
 }
-export { getAccount, login, register };
+export { getAccount, login, logout, register };
 
