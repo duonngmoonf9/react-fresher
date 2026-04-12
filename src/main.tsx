@@ -1,9 +1,7 @@
 import App from '@/App';
-import { App as AppAntd } from 'antd';
-import DashBoardPage from 'components/admin/dashboard';
-import ManageBookPage from 'components/admin/manage.book';
-import ManageOrderPage from 'components/admin/manage.order';
-import ManageUserPage from 'components/admin/manage.user';
+import { enUSIntl, ProConfigProvider } from '@ant-design/pro-components';
+import { App as AppAntd, ConfigProvider } from 'antd';
+import enUS from 'antd/locale/en_US';
 import AuthCheck from 'components/auth';
 import { AuthProvider } from 'components/context/AuthContext';
 import AppHeaderAdmin from 'components/layout/AppHeaderAdmin';
@@ -12,13 +10,16 @@ import BookPage from 'pages/client/BookPage.tsx';
 import HomePage from 'pages/client/HomePage.tsx';
 import LoginClient from 'pages/client/auth/LoginClient.tsx';
 import RegisterClient from 'pages/client/auth/RegisterClient.tsx';
-import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import {
     createBrowserRouter,
     RouterProvider,
 } from "react-router-dom";
 import 'styles/global.scss';
+import DashBoardPage from './pages/admin/dashboard';
+import ManageBookPage from './pages/admin/manage.book';
+import ManageOrderPage from './pages/admin/manage.order';
+import ManageUserPage from './pages/admin/manage.user';
 
 // const loadAccount = async () => {
 //     const res = await getAccount();
@@ -26,7 +27,6 @@ import 'styles/global.scss';
 //         return { user: res.data };
 //     }
 //     return { user: null };
-
 // }
 const router = createBrowserRouter([
     {
@@ -119,13 +119,13 @@ const router = createBrowserRouter([
 
 ]);
 createRoot(document.getElementById('root')!).render(
-    <StrictMode>
-        {/* <App /> */}
-        <AppAntd>
-            <AuthProvider>
-                <RouterProvider router={router} />
-            </AuthProvider >
-
-        </AppAntd>
-    </StrictMode>,
+    <AppAntd>
+        <AuthProvider>
+            <ConfigProvider locale={enUS}>
+                <ProConfigProvider intl={enUSIntl}>
+                    <RouterProvider router={router} />
+                </ProConfigProvider>
+            </ConfigProvider>
+        </AuthProvider >
+    </AppAntd>
 )

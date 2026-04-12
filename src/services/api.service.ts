@@ -20,5 +20,11 @@ const getAccount = () => {
     const API_URL = `/api/v1/auth/account`;
     return axios.get<IBackendRes<IAccount>>(API_URL);
 }
-export { getAccount, login, logout, register };
+
+const getAllUser = (query: string) => {
+    const API_URL = `/api/v1/user?${query}`;
+    return axios.get<IBackendRes<IModelPaginate<IGetAllUser>>>(API_URL);
+}
+
+export { getAccount, getAllUser, login, logout, register };
 

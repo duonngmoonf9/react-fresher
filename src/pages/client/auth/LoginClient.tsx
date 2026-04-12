@@ -44,9 +44,9 @@ const LoginClient = () => {
 
     };
 
-    const onFinishFailed: FormProps<FieldType>['onFinishFailed'] = (errorInfo) => {
-        message.error(errorInfo.message);
-    };
+    // const onFinishFailed: FormProps<FieldType>['onFinishFailed'] = (errorInfo) => {
+    //     message.error(errorInfo.message);
+    // };
 
     return (
         <Row justify={'center'} style={{ marginTop: "30px" }}>
@@ -59,7 +59,7 @@ const LoginClient = () => {
                         layout='vertical'
                         form={formLogin}
                         onFinish={onFinish}
-                        onFinishFailed={onFinishFailed}
+                        // onFinishFailed={onFinishFailed}
                         autoComplete="off"
                     >
                         <Form.Item<FieldType>

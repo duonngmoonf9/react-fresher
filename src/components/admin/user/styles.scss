@@ -1,0 +1,19 @@
+.list-user {
+
+    .action-user {
+        display: flex;
+        gap: 10px;
+
+        .edit-user {
+            cursor: pointer;
+            color: orange;
+
+        }
+
+        .delete-user {
+            cursor: pointer;
+            color: red;
+        }
+    }
+
+}

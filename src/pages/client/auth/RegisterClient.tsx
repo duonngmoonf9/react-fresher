@@ -38,9 +38,9 @@ const RegisterClient = () => {
 
     };
 
-    const onFinishFailed: FormProps<FieldType>['onFinishFailed'] = (errorInfo) => {
-        message.error(errorInfo.message);
-    };
+    // const onFinishFailed: FormProps<FieldType>['onFinishFailed'] = (errorInfo) => {
+    //     message.error(errorInfo.message);
+    // };
 
     return (
         <Row justify={'center'} style={{ marginTop: "30px" }}>
@@ -53,7 +53,7 @@ const RegisterClient = () => {
                         layout='vertical'
                         form={formRegister}
                         onFinish={onFinish}
-                        onFinishFailed={onFinishFailed}
+                        // onFinishFailed={onFinishFailed}
                         autoComplete="off"
                     >
 

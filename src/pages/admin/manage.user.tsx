@@ -1,9 +1,8 @@
+import TableUser from "@/components/admin/user/UserList";
 
 const ManageUserPage = () => {
     return (
-        <div>
-            ManageUserPage
-        </div>
+        <TableUser />
     )
 }
 
