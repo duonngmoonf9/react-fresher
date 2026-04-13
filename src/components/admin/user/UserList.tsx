@@ -1,110 +1,117 @@
 import { getAllUser } from '@/services/api.service';
-import { dateRangeValidate } from '@/services/helper';
+import { dateRangeValidate, FORMATE_DATE_VN } from '@/services/helper';
 import { DeleteOutlined, EditOutlined, PlusOutlined } from '@ant-design/icons';
 import type { ActionType, ProColumns } from '@ant-design/pro-components';
 import { ProTable } from '@ant-design/pro-components';
 import { Button, Popconfirm } from 'antd';
 import dayjs from 'dayjs';
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import './styles.scss';
+import UserDetail from './UserDetail';
 
 
 
 
-
-
-const columns: ProColumns<IGetAllUser>[] = [
-    {
-        title: 'STT',
-        dataIndex: 'index',
-        valueType: 'indexBorder',
-        width: 48,
-    },
-    {
-        title: 'ID',
-        dataIndex: '_id',
-        hideInSearch: true,
-        render(dom, entity, index, action, schema) {
-            return (
-                <a href="#">{entity._id}</a>
-            )
-        },
-    },
-    {
-        title: 'Full Name',
-        dataIndex: 'fullName',
-    },
-    {
-        title: 'Email',
-        dataIndex: 'email',
-        copyable: true,
-        ellipsis: true,
-    },
-    {
-        title: 'Created at',
-        dataIndex: 'createdAt',
-        valueType: 'date',
-        sorter: true,
-        hideInSearch: true,
-        render: (dom, entity, index, action, schema) => {
-            return (
-                <span>
-                    {entity.createdAt ? dayjs(entity.createdAt).format('DD-MM-YYYY') : '-'}
-                </span>
-            );
-        }
-    },
-    {
-        title: 'Created at',
-        dataIndex: 'createdAtRange',
-        valueType: 'dateRange',
-        hideInTable: true,
-    },
-    {
-        title: 'Phone',
-        dataIndex: 'phone',
-        hideInSearch: true,
-        copyable: true,
-    },
-    {
-        title: 'Action',
-        key: 'action',
-        hideInSearch: true,
-
-        render: (dom, entity, index, action, schema) => (
-            <div className='action-user'>
-                <EditOutlined onClick={() => {
-                    // setModalUpdate(true);
-                    // setDataUpdate(record)
-                }}
-                    className='edit-user' />
-                <Popconfirm
-                    title="Delete the task"
-                    description="Are you sure to delete this task?"
-                    // onConfirm={() => handleDelete(record._id)}
-                    // onCancel={() => setOpen()}
-                    okText="Yes"
-                    cancelText="No"
-                    placement="left"
-                >
-                    <DeleteOutlined className='delete-user' />
-
-                </Popconfirm>
-
-            </div>
-        ),
-    }
-];
-
-type TSearch = {
-    fullName: string;
-    email: string;
-    createdAt: string;
-    createdAtRange: string;
-}
 
 const TableUser = () => {
+
     const actionRef = useRef<ActionType | null>(null);
+
+    const [openViewDetail, setOpenViewDetail] = useState<boolean>(false);
+    const [dataDetail, setDataDetail] = useState<IGetAllUser | null>(null);
+
+    type TSearch = {
+        fullName?: string;
+        email?: string;
+        createdAt?: string;
+        createdAtRange?: string[];
+    }
+
+    const columns: ProColumns<IGetAllUser>[] = [
+        {
+            title: 'STT',
+            dataIndex: 'index',
+            valueType: 'indexBorder',
+            width: 48,
+        },
+        {
+            title: 'ID',
+            dataIndex: '_id',
+            hideInSearch: true,
+            render(dom, entity, index, action, schema) {
+                return (
+                    <a href="#" onClick={() => {
+                        setOpenViewDetail(true);
+                        setDataDetail(entity);
+                    }}>{entity._id}</a>
+                )
+            },
+        },
+        {
+            title: 'Full Name',
+            dataIndex: 'fullName',
+        },
+        {
+            title: 'Email',
+            dataIndex: 'email',
+            copyable: true,
+            ellipsis: true,
+        },
+        {
+            title: 'Created at',
+            dataIndex: 'createdAt',
+            valueType: 'date',
+            sorter: true,
+            hideInSearch: true,
+            render: (dom, entity, index, action, schema) => {
+                return (
+                    <span>
+                        {entity.createdAt ? dayjs(entity.createdAt).format(FORMATE_DATE_VN) : '-'}
+                    </span>
+                );
+            }
+        },
+        {
+            title: 'Created at',
+            dataIndex: 'createdAtRange',
+            valueType: 'dateRange',
+            hideInTable: true,
+        },
+        {
+            title: 'Phone',
+            dataIndex: 'phone',
+            hideInSearch: true,
+            copyable: true,
+        },
+        {
+            title: 'Action',
+            key: 'action',
+            hideInSearch: true,
+
+            render: (dom, entity, index, action, schema) => (
+                <div className='action-user'>
+                    <EditOutlined onClick={() => {
+                        // setModalUpdate(true);
+                        // setDataUpdate(record)
+                    }}
+                        className='edit-user' />
+                    <Popconfirm
+                        title="Delete the task"
+                        description="Are you sure to delete this task?"
+                        // onConfirm={() => handleDelete(record._id)}
+                        // onCancel={() => setOpen()}
+                        okText="Yes"
+                        cancelText="No"
+                        placement="left"
+                    >
+                        <DeleteOutlined className='delete-user' />
+
+                    </Popconfirm>
+
+                </div>
+            ),
+        }
+    ];
 
     return (
         <>
@@ -170,6 +177,12 @@ const TableUser = () => {
                     </Button>
 
                 ]}
+            />
+            <UserDetail
+                openViewDetail={openViewDetail}
+                setOpenViewDetail={setOpenViewDetail}
+                dataDetail={dataDetail}
+                setDataDetail={setDataDetail}
             />
         </>
     );
