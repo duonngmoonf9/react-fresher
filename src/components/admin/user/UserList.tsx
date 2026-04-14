@@ -1,13 +1,15 @@
 import { getAllUser } from '@/services/api.service';
 import { dateRangeValidate, FORMATE_DATE_VN } from '@/services/helper';
-import { DeleteOutlined, EditOutlined, PlusOutlined } from '@ant-design/icons';
+import { DeleteOutlined, EditOutlined, ExportOutlined, ImportOutlined, PlusOutlined } from '@ant-design/icons';
 import type { ActionType, ProColumns } from '@ant-design/pro-components';
 import { ProTable } from '@ant-design/pro-components';
 import { Button, Popconfirm } from 'antd';
 import dayjs from 'dayjs';
 import { useRef, useState } from 'react';
 import './styles.scss';
+import UserAdd from './UserAdd';
 import UserDetail from './UserDetail';
+import UserImport from './UserImport';
 
 
 
@@ -18,6 +20,9 @@ const TableUser = () => {
     const actionRef = useRef<ActionType | null>(null);
 
     const [openViewDetail, setOpenViewDetail] = useState<boolean>(false);
+    const [openModalAddUser, setOpenModalAddUser] = useState<boolean>(false);
+    const [openModalImport, setOpenModalImport] = useState<boolean>(false);
+    const [openModalExport, setOpenModalExport] = useState<boolean>(false);
     const [dataDetail, setDataDetail] = useState<IGetAllUser | null>(null);
 
     type TSearch = {
@@ -113,6 +118,10 @@ const TableUser = () => {
         }
     ];
 
+    const reloadList = () => {
+        actionRef.current?.reload();
+    }
+
     return (
         <>
             <ProTable<IGetAllUser, TSearch>
@@ -142,6 +151,8 @@ const TableUser = () => {
 
                         if (sort && sort.createdAt) {
                             query += `&sort=${sort.createdAt === 'ascend' ? "createdAt" : "-createdAt"}`
+                        } else {
+                            query += `&sort=-createdAt`
                         }
                     }
                     const res = await getAllUser(query);
@@ -169,12 +180,35 @@ const TableUser = () => {
                         key="button"
                         icon={<PlusOutlined />}
                         onClick={() => {
-                            actionRef.current?.reload();
+                            reloadList();
+                            setOpenModalAddUser(true);
                         }}
                         type="primary"
                     >
                         Add new
-                    </Button>
+                    </Button>,
+                    <Button
+                        key="button"
+                        icon={<ImportOutlined />}
+                        onClick={() => {
+                            reloadList();
+                            setOpenModalImport(true);
+                        }}
+                        type="primary"
+                    >
+                        Import
+                    </Button>,
+                    <Button
+                        key="button"
+                        icon={<ExportOutlined />}
+                        onClick={() => {
+                            reloadList();
+                            setOpenModalExport(true);
+                        }}
+                        type="primary"
+                    >
+                        Export
+                    </Button>,
 
                 ]}
             />
@@ -183,6 +217,16 @@ const TableUser = () => {
                 setOpenViewDetail={setOpenViewDetail}
                 dataDetail={dataDetail}
                 setDataDetail={setDataDetail}
+            />
+            <UserAdd
+                reloadList={reloadList}
+                setOpenModalAddUser={setOpenModalAddUser}
+                openModalAddUser={openModalAddUser}
+
+            />
+            <UserImport
+                openModalImport={openModalImport}
+                setOpenModalImport={setOpenModalImport}
             />
         </>
     );

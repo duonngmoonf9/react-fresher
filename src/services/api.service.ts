@@ -26,5 +26,10 @@ const getAllUser = (query: string) => {
     return axios.get<IBackendRes<IModelPaginate<IGetAllUser>>>(API_URL);
 }
 
-export { getAccount, getAllUser, login, logout, register };
+const createUser = (data: object) => {
+    const API_URL = `/api/v1/user`;
+    return axios.post<IBackendRes<IRegister>>(API_URL, data);
+}
+
+export { createUser, getAccount, getAllUser, login, logout, register };
 

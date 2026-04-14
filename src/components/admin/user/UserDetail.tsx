@@ -1,5 +1,5 @@
 import { FORMATE_DATE_VN } from '@/services/helper';
-import { Badge, Descriptions, Drawer } from 'antd';
+import { Avatar, Badge, Descriptions, Drawer } from 'antd';
 import dayjs from 'dayjs';
 interface IUserDetailProps {
     openViewDetail: boolean;
@@ -34,9 +34,10 @@ const UserDetail = (props: IUserDetailProps) => {
                     <Descriptions.Item label="Tên hiển thị">{dataDetail?.fullName}</Descriptions.Item>
                     <Descriptions.Item label="Email">{dataDetail?.email}</Descriptions.Item>
                     <Descriptions.Item label="Số điện thoại">{dataDetail?.phone}</Descriptions.Item>
-                    <Descriptions.Item label="Role" span={2}>
+                    <Descriptions.Item label="Role">
                         <Badge status="processing" text={dataDetail?.role} />
                     </Descriptions.Item>
+                    <Descriptions.Item label="Avartar"><Avatar size={140} src={`${import.meta.env.VITE_BACKEND_URL}/images/avatar/${dataDetail?.avatar}`}>{dataDetail?.fullName}</Avatar></Descriptions.Item>
                     <Descriptions.Item label="Thời gian tạo">{dayjs(dataDetail?.createdAt).format(FORMATE_DATE_VN)}</Descriptions.Item>
                     <Descriptions.Item label="Thời gian sửa">{dayjs(dataDetail?.updatedAt).format(FORMATE_DATE_VN)}</Descriptions.Item>
 
