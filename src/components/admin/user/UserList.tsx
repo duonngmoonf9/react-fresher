@@ -227,6 +227,7 @@ const TableUser = () => {
             <UserImport
                 openModalImport={openModalImport}
                 setOpenModalImport={setOpenModalImport}
+                reloadList={reloadList}
             />
         </>
     );

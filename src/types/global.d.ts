@@ -64,4 +64,12 @@ declare global {
         createdAt: Date;
         updatedAt: Date;
     }
+
+    interface IResImportUser {
+        countSuccess: number;
+        countError: number;
+        detail: string;
+    }
 }
+
+

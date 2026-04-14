@@ -31,5 +31,10 @@ const createUser = (data: object) => {
     return axios.post<IBackendRes<IRegister>>(API_URL, data);
 }
 
-export { createUser, getAccount, getAllUser, login, logout, register };
+const createUserImport = (data: object[]) => {
+    const API_URL = `api/v1/user/bulk-create`;
+    return axios.post<IBackendRes<IResImportUser>>(API_URL, data);
+}
+
+export { createUser, createUserImport, getAccount, getAllUser, login, logout, register };
 
