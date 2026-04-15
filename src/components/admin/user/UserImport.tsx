@@ -77,7 +77,6 @@ const UserImport = (props: IUserImport) => {
 
                     let jsonData: IDataImport[] = [];
                     if (file) {
-                        //load buffer =>chuyen qua dang mang
                         const workbook = new ExcelJS.Workbook();
                         const arrayBuffer = await file.arrayBuffer();
                         await workbook.xlsx.load(arrayBuffer);

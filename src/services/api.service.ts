@@ -36,5 +36,15 @@ const createUserImport = (data: object[]) => {
     return axios.post<IBackendRes<IResImportUser>>(API_URL, data);
 }
 
-export { createUser, createUserImport, getAccount, getAllUser, login, logout, register };
+const updateUser = (data: object) => {
+    const API_URL = `/api/v1/user`;
+    return axios.put<IBackendRes<IUserUpdate>>(API_URL, data);
+}
+
+const deleteUser = (id: string) => {
+    const API_URL = `/api/v1/user/${id}`;
+    return axios.delete<IBackendRes<IAccount>>(API_URL)
+}
+
+export { createUser, createUserImport, deleteUser, getAccount, getAllUser, login, logout, register, updateUser };
 

@@ -1,9 +1,10 @@
-import { getAllUser } from '@/services/api.service';
+import { useAuthContext } from '@/components/context/AuthContext';
+import { deleteUser, getAllUser } from '@/services/api.service';
 import { dateRangeValidate, FORMATE_DATE_VN } from '@/services/helper';
 import { DeleteOutlined, EditOutlined, ExportOutlined, ImportOutlined, PlusOutlined } from '@ant-design/icons';
 import type { ActionType, ProColumns } from '@ant-design/pro-components';
 import { ProTable } from '@ant-design/pro-components';
-import { Button, Popconfirm } from 'antd';
+import { App, Button, Popconfirm } from 'antd';
 import dayjs from 'dayjs';
 import { useRef, useState } from 'react';
 import { CSVLink } from "react-csv";
@@ -11,6 +12,7 @@ import './styles.scss';
 import UserAdd from './UserAdd';
 import UserDetail from './UserDetail';
 import UserImport from './UserImport';
+import UserUpdate from './UserUpdate';
 
 
 
@@ -20,13 +22,20 @@ const TableUser = () => {
 
     const actionRef = useRef<ActionType | null>(null);
 
+    const { delay } = useAuthContext();
+
     const [openViewDetail, setOpenViewDetail] = useState<boolean>(false);
+    const [loading, setLoading] = useState<boolean>(false);
     const [openModalAddUser, setOpenModalAddUser] = useState<boolean>(false);
     const [openModalImport, setOpenModalImport] = useState<boolean>(false);
     const [dataDetail, setDataDetail] = useState<IGetAllUser | null>(null);
     const [dataExport, setDataExport] = useState<IGetAllUser[]>([]);
     const [modalUpdate, setModalUpdate] = useState<boolean>(false);
+    const [open, setOpen] = useState<boolean>(false);
     const [dataUpdate, setDataUpdate] = useState<IUserUpdate | null>(null);
+
+    const { message } = App.useApp();
+
 
     type TSearch = {
         fullName?: string;
@@ -41,6 +50,12 @@ const TableUser = () => {
             dataIndex: 'index',
             valueType: 'indexBorder',
             width: 48,
+            render: (text, record, index) => {
+                const pageSize = 5; // hoặc lấy từ params
+                const current = actionRef.current?.pageInfo?.current || 1;
+
+                return (current - 1) * pageSize + index + 1;
+            },
         },
         {
             title: 'ID',
@@ -104,13 +119,16 @@ const TableUser = () => {
                     }}
                         className='edit-user' />
                     <Popconfirm
-                        title="Delete the task"
-                        description="Are you sure to delete this task?"
-                        // onConfirm={() => handleDelete(record._id)}
-                        // onCancel={() => setOpen()}
+                        title="Delete user"
+                        description="Ban co muon xoa user?"
+                        onConfirm={() => handleDelete(entity._id)}
+                        onCancel={() => setOpen(false)}
                         okText="Yes"
                         cancelText="No"
                         placement="left"
+                        okButtonProps={{
+                            loading: loading
+                        }}
                     >
                         <DeleteOutlined className='delete-user' />
 
@@ -120,6 +138,20 @@ const TableUser = () => {
             ),
         }
     ];
+
+    const handleDelete = async (id: string) => {
+        setLoading(true)
+        await delay(2000);
+        const res = await deleteUser(id);
+        if (res.data) {
+            message.success("da xoa thanh cong");
+            reloadList();
+        } else {
+            message.error(JSON.stringify(res.message))
+        }
+        setLoading(false)
+
+    }
 
     const reloadList = () => {
         actionRef.current?.reload();
@@ -236,6 +268,13 @@ const TableUser = () => {
                 openModalImport={openModalImport}
                 setOpenModalImport={setOpenModalImport}
                 reloadList={reloadList}
+            />
+
+            <UserUpdate
+                dataUpdate={dataUpdate} setDataUpdate={setDataUpdate}
+                modalUpdate={modalUpdate} setModalUpdate={setModalUpdate}
+                reloadList={reloadList}
+
             />
         </>
     );

@@ -142,7 +142,7 @@ const AppHeaderAdmin = () => {
                             <Dropdown menu={{ items: itemsDropdown }} trigger={['click']}>
                                 <Space style={{ cursor: "pointer" }}>
                                     <Avatar src={urlAvatar} />
-                                    {user?.fullName}
+                                    {user?.phone}
                                 </Space>
                             </Dropdown>
                         </div>
