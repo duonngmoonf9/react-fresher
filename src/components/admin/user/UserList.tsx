@@ -130,7 +130,7 @@ const TableUser = () => {
                 actionRef={actionRef}
                 cardBordered
                 request={async (params, sort, filter) => {
-                    console.log(sort, filter);
+                    // console.log(sort, filter);
 
                     let query = "";
                     if (params) {

@@ -4,8 +4,10 @@ import { InboxOutlined } from '@ant-design/icons';
 import type { TableProps, UploadProps } from 'antd';
 
 import { App, Modal, Table, Upload } from 'antd';
+import templateFile from "assets/template/user.xlsx?url";
 import ExcelJS from 'exceljs';
 import { useState } from 'react';
+
 
 
 interface IUserImport {
@@ -72,15 +74,14 @@ const UserImport = (props: IUserImport) => {
                 if (info.fileList && info.fileList.length > 0) {
                     const file = info.fileList[0].originFileObj;
 
+                    let jsonData: IDataImport[] = [];
                     if (file) {
                         //load buffer =>chuyen qua dang mang
                         const workbook = new ExcelJS.Workbook();
                         const arrayBuffer = await file.arrayBuffer();
                         await workbook.xlsx.load(arrayBuffer);
 
-
                         //convert file to Json
-                        let jsonData: IDataImport[] = [];
                         workbook.worksheets.forEach((sheet) => {
                             let firstRow = sheet.getRow(1);
                             if (!firstRow.cellCount) return;
@@ -95,8 +96,15 @@ const UserImport = (props: IUserImport) => {
                                 jsonData.push(obj);
                             });
                         });
-                        setDataImport(jsonData)
+
                     }
+                    jsonData.map((item, index) => {
+                        return {
+                            ...item,
+                            id: index + 1
+                        }
+                    })
+                    setDataImport(jsonData)
                 }
             } else if (status === 'error') {
                 message.error(`${info.file.name} file upload failed.`);
@@ -159,11 +167,10 @@ const UserImport = (props: IUserImport) => {
                 </p>
                 <p className="ant-upload-text">Click or drag file to this area to upload</p>
                 <p className="ant-upload-hint">
-                    Support for a single or bulk upload. Strictly prohibited from uploading company data or other
-                    banned files.
+                    Support for uploading XLSX, CSV, and Excel files. Please ensure files contain columns: fullName, email, phone. or <a onClick={(e) => e.stopPropagation()} href={templateFile} download >Dowload sample file</a>
                 </p>
             </Dragger>
-            <Table<IDataImport> title={() => <span>Du lieu upload:</span>} columns={columns} dataSource={dataImport} style={{ marginTop: "20px", }} />
+            <Table<IDataImport> title={() => <span>Du lieu upload:</span>} rowKey={"id"} columns={columns} dataSource={dataImport} style={{ marginTop: "20px", }} />
         </Modal >
 
 
