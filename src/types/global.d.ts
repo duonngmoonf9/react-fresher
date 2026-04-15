@@ -70,6 +70,11 @@ declare global {
         countError: number;
         detail: string;
     }
+
+    interface IUserUpdate {
+        fullName: string;
+        phone: string;
+    }
 }
 
 

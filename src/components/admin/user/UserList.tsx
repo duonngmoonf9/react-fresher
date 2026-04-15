@@ -6,6 +6,7 @@ import { ProTable } from '@ant-design/pro-components';
 import { Button, Popconfirm } from 'antd';
 import dayjs from 'dayjs';
 import { useRef, useState } from 'react';
+import { CSVLink } from "react-csv";
 import './styles.scss';
 import UserAdd from './UserAdd';
 import UserDetail from './UserDetail';
@@ -22,8 +23,10 @@ const TableUser = () => {
     const [openViewDetail, setOpenViewDetail] = useState<boolean>(false);
     const [openModalAddUser, setOpenModalAddUser] = useState<boolean>(false);
     const [openModalImport, setOpenModalImport] = useState<boolean>(false);
-    const [openModalExport, setOpenModalExport] = useState<boolean>(false);
     const [dataDetail, setDataDetail] = useState<IGetAllUser | null>(null);
+    const [dataExport, setDataExport] = useState<IGetAllUser[]>([]);
+    const [modalUpdate, setModalUpdate] = useState<boolean>(false);
+    const [dataUpdate, setDataUpdate] = useState<IUserUpdate | null>(null);
 
     type TSearch = {
         fullName?: string;
@@ -96,8 +99,8 @@ const TableUser = () => {
             render: (dom, entity, index, action, schema) => (
                 <div className='action-user'>
                     <EditOutlined onClick={() => {
-                        // setModalUpdate(true);
-                        // setDataUpdate(record)
+                        setModalUpdate(true);
+                        setDataUpdate(entity)
                     }}
                         className='edit-user' />
                     <Popconfirm
@@ -156,6 +159,9 @@ const TableUser = () => {
                         }
                     }
                     const res = await getAllUser(query);
+                    if (res.data) {
+                        setDataExport(res.data.result ?? []);
+                    }
 
                     return {
                         data: res.data?.result as any,
@@ -201,13 +207,15 @@ const TableUser = () => {
                     <Button
                         key="button"
                         icon={<ExportOutlined />}
-                        onClick={() => {
-                            reloadList();
-                            setOpenModalExport(true);
-                        }}
                         type="primary"
                     >
-                        Export
+
+                        <CSVLink
+                            data={dataExport}
+                            filename='export-user.csv'
+                        >
+                            Export
+                        </CSVLink>
                     </Button>,
 
                 ]}

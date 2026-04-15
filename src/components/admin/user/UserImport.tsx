@@ -25,6 +25,7 @@ const { Dragger } = Upload;
 
 const UserImport = (props: IUserImport) => {
     const [dataImport, setDataImport] = useState<IDataImport[]>([]);
+
     const [loading, isLoading] = useState<boolean>(false);
 
     const { openModalImport, setOpenModalImport, reloadList } = props;
