@@ -77,6 +77,31 @@ declare global {
         fullName: string;
         phone: string;
     }
+
+
+    interface IBookGet {
+        _id: string;
+        thumbnail: string;
+        slider: string[];
+        mainText: string;
+        author: string;
+        price: number;
+        sold: number;
+        quantity: number;
+        category: string;
+        createdAt: Date;
+        updatedAt: Date;
+    }
+
+    interface IBookUpdate {
+        "thumbnail": string,
+        "slider": string[],
+        "mainText": string,
+        "author": string,
+        "price": number,
+        "quantity": number,
+        "category": string
+    }
 }
 
 
