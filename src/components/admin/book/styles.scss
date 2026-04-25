@@ -1,0 +1,19 @@
+.list-book {
+
+    .action-book {
+        display: flex;
+        gap: 10px;
+
+        .edit-book {
+            cursor: pointer;
+            color: orange;
+
+        }
+
+        .delete-book {
+            cursor: pointer;
+            color: red;
+        }
+    }
+
+}
