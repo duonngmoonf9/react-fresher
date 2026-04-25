@@ -1,8 +1,8 @@
+import BookList from "@/components/admin/book/BookList";
+
 const ManageBookPage = () => {
     return (
-        <div>
-            ManageBookPage
-        </div>
+        <BookList />
     )
 }
 
